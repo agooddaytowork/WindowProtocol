@@ -45,7 +45,7 @@ const QHash<TN, QString> SwapKeyValOnOneToOneQHash(const QHash<QString, TN> &AQH
     return tmp;
 }
 
-quint8 XORofAllBytesInQByteArr(const QByteArray &QBArr)
+inline static quint8 XORofAllBytesInQByteArr(const QByteArray &QBArr)
 {
     if (!(QBArr.isNull() || QBArr.isEmpty()))
     {
@@ -68,7 +68,7 @@ quint8 XORofAllBytesInQByteArr(const QByteArray &QBArr)
 /// \return QByteArray contains a hex number
 ///         representing an integer number encoded by Ascii code
 ///
-const QByteArray IntStr2QBArr0Pad(const quint32 Num, const quint8 SizeInByte)
+inline static const QByteArray IntStr2QBArr0Pad(const quint32 Num, const quint8 SizeInByte)
 {
     QString QStrTmp = QString::number(Num);
     return QStrTmp.prepend(QString("").fill('0',SizeInByte-QStrTmp.size())).toLocal8Bit();

@@ -22,10 +22,11 @@ public:
 
     //Get Verboselly Translated Protocol Parts
     quint8 getWPNo() const;
-    const QString &getAddress() const;
-    const QString &getWINMean() const;
-    const QString &getCOMMean() const;
-    const QString &getDATAMean() const;
+    const QString getAddress() const;
+    const QString getWINMean() const;
+    const QString getCOMMean() const;
+    const QString getDATAMean() const;
+    const QString getMSGMean() const;
 
 
 
@@ -95,8 +96,12 @@ public:
 
     WindowProtocol &setDATA(const quint8 aByte);
     WindowProtocol &setDATA(const QByteArray &data);
+    WindowProtocol &setON();
+    WindowProtocol &setOFF();
 
-    const WindowProtocol &genMSG();
+    WindowProtocol &setCRC(const quint16 crc);
+
+    const QByteArray &genMSG();
     static WindowProtocol &fromQByteArray(const QByteArray &aMsg);
 
 private:
@@ -120,6 +125,8 @@ private:
     //Miscellany (Just A Bunch Of Other Constants)
     static constexpr const quint8 RD = 0x30;
     static constexpr const quint8 WR = 0x31;
+    static const QByteArray HVON;
+    static const QByteArray HVOFF;
 
     /*Protocol Parameter***********************************************************************/
     //<STX> | <ADDR> | <WIN> | <COM> | <DATA> | <ETX> | <CRC>
@@ -134,5 +141,5 @@ private:
     QByteArray MSG;
 
     //_________________________________________________________________________________________
-
+};
 #endif // WINDOWPROTOCOL_H
