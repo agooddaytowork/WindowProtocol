@@ -2,7 +2,7 @@
 
 WindowProtocol::WindowProtocol()
 {
-
+    anIf(WindowProtocolDbgEn, anTrk("Object Constructed"));
 }
 
 quint8 WindowProtocol::getWPNo() const
@@ -247,6 +247,11 @@ const QByteArray &WindowProtocol::genMSG()
     CRC=QString(QByteArray().append(XORofAllBytesInQByteArr(MSG)).toHex()).toUpper().toLocal8Bit().toHex().toInt(NULL,16);
     MSG<<CRC;
     MSG.prepend(STX);
+    anIf(WindowProtocolDbgEn,
+         anAck("Protocol Generated !");
+         anInfo(MSG.toHex());
+         anInfo(getMSGMean());
+    );
     return MSG;
 }
 
