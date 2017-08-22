@@ -98,6 +98,7 @@ public:
     WindowProtocol &setDATA(const QByteArray &data);
     WindowProtocol &setON();
     WindowProtocol &setOFF();
+    WindowProtocol &clearDATA();
 
     WindowProtocol &setCRC(const quint16 crc);
 

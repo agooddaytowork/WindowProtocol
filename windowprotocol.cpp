@@ -71,7 +71,7 @@ const QString WindowProtocol::getDATAMean() const
     case 841:
     case 842:
     {
-        tmpReturn=QString(DATA);
+        tmpReturn=QString(DATA).trimmed();
         break;
     }
     default:
@@ -228,6 +228,12 @@ WindowProtocol &WindowProtocol::setOFF()
     {
         this->setDATA(HVOFF);
     }
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::clearDATA()
+{
+    DATA.clear();
     return *this;
 }
 
