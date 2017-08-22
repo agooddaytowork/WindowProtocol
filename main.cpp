@@ -6,6 +6,11 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    qDebug() << "==============================================";
+    WindowProtocol aTest(0);
+    qDebug() << aTest.HVOnOffCh1().Write().setON().genMSG().toHex();
+    qDebug() << aTest.getMSGMean();
+    qDebug() << "==============================================";
 
     QList<QByteArray> testArray;
     testArray.append("02 80 30 31 31 31 31 03 42 33");

@@ -53,6 +53,9 @@ const QString WindowProtocol::getDATAMean() const
         break;
     }
     case 11:
+    case 12:
+    case 13:
+    case 14:
     {
         if (DATA==HVON)
             tmpReturn="ON";
@@ -226,7 +229,7 @@ WindowProtocol &WindowProtocol::setDATA(const QByteArray &data)
 
 WindowProtocol &WindowProtocol::setON()
 {
-    if (WIN==11)
+    if ((WIN>=11)&&(WIN<=14))
     {
         this->setDATA(HVON);
     }
@@ -235,7 +238,7 @@ WindowProtocol &WindowProtocol::setON()
 
 WindowProtocol &WindowProtocol::setOFF()
 {
-    if (WIN==11)
+    if ((WIN>=11)&&(WIN<=14))
     {
         this->setDATA(HVOFF);
     }
