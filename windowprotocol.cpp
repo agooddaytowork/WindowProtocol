@@ -96,6 +96,11 @@ const QString WindowProtocol::getMSGMean() const
     return tmpReturn;
 }
 
+bool WindowProtocol::isCMDFlagSet() const
+{
+    return isCMD;
+}
+
 WindowProtocol &WindowProtocol::setWCNo(const quint8 num)
 {
     ADDR=num+OffsetADDR;
@@ -286,6 +291,12 @@ WindowProtocol &WindowProtocol::fromQByteArray(const QByteArray &aMsg)
     tmpInt = downPos - upPos;
     tmpReturn->setDATA(aMsg.mid(upPos,tmpInt)).genMSG();
     return *tmpReturn;
+}
+
+WindowProtocol &WindowProtocol::setCMDFlag(const bool isACMD)
+{
+    isCMD=isACMD;
+    return *this;
 }
 
 quint8 WindowProtocol::getADDR() const

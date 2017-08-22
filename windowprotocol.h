@@ -27,6 +27,7 @@ public:
     const QString getCOMMean() const;
     const QString getDATAMean() const;
     const QString getMSGMean() const;
+    bool isCMDFlagSet() const;
 
 
 
@@ -105,6 +106,8 @@ public:
     const QByteArray &genMSG();
     static WindowProtocol &fromQByteArray(const QByteArray &aMsg);
 
+    WindowProtocol &setCMDFlag(const bool isACMD);
+
 private:
     /*Define Class Constants***************************************************************************/
     //Fixed Size in Byte of Protocol Parameters (if provided)
@@ -138,7 +141,7 @@ private:
     QByteArray DATA;
     static constexpr const quint8 ETX = 0x03;
     quint16 CRC;
-
+    bool isCMD = true;
     QByteArray MSG;
 
     //_________________________________________________________________________________________
