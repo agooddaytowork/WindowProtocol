@@ -50,6 +50,12 @@ const QString WindowProtocol::getDATAMean() const
             tmpReturn="ACK";
         else if (tmpDataStr==QStringLiteral("\x15"))
             tmpReturn="NACK";
+        else if (tmpDataStr==QStringLiteral("\x32"))
+            tmpReturn="Unknown Window";
+        else if (tmpDataStr==QStringLiteral("\x33"))
+            tmpReturn="Data Type Error";
+        else if (tmpDataStr==QStringLiteral("\x35"))
+            tmpReturn="Win Disabled";
         break;
     }
     case 11:
