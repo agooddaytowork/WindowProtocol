@@ -5,6 +5,12 @@ WindowProtocol::WindowProtocol()
     anIf(WindowProtocolDbgEn, anTrk("Object Constructed"));
 }
 
+WindowProtocol::WindowProtocol(const quint8 WPNo)
+{
+    anIf(WindowProtocolDbgEn, anTrk("Object Constructed With WPNo="<<WPNo));
+    setWPNo(WPNo);
+}
+
 quint8 WindowProtocol::getWPNo() const
 {
     return ADDR-OffsetADDR;
@@ -101,7 +107,7 @@ bool WindowProtocol::isCMDFlagSet() const
     return isCMD;
 }
 
-WindowProtocol &WindowProtocol::setWCNo(const quint8 num)
+WindowProtocol &WindowProtocol::setWPNo(const quint8 num)
 {
     ADDR=num+OffsetADDR;
     return *this;

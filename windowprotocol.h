@@ -11,6 +11,7 @@ class WindowProtocol
 {
 public:
     explicit WindowProtocol();
+    explicit WindowProtocol(const quint8 WPNo);
 
     //Get Original Protocol Parts
     quint8 getADDR() const;
@@ -32,7 +33,7 @@ public:
 
 
     //Set Protocol Parts
-    WindowProtocol &setWCNo(const quint8 num);
+    WindowProtocol &setWPNo(const quint8 num);
     WindowProtocol &setADDR(const quint8 addr);
 
     WindowProtocol &setWIN(const quint16 win);
