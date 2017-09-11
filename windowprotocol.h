@@ -104,6 +104,18 @@ public:
 
     WindowProtocol &setCRC(const quint16 crc);
 
+    WindowProtocol &setChNo(const quint8 ChannelNo);
+    WindowProtocol &HVOnOff();
+    WindowProtocol &DeviceNumber();
+    WindowProtocol &PowerMax();
+    WindowProtocol &VTarget();
+    WindowProtocol &IProtect();
+    WindowProtocol &SetPoint();
+    WindowProtocol &TempHV();
+    WindowProtocol &VMeasured();
+    WindowProtocol &IMeasured();
+    WindowProtocol &PMeasured();
+
     const QByteArray &genMSG();
     static WindowProtocol &fromQByteArray(const QByteArray &aMsg);
 
@@ -145,6 +157,11 @@ private:
     bool isCMD = true;
     QByteArray MSG;
 
+    /*Protocol Extra Parameter*****************************************************************/
+    quint8 ChNo;
+    QString baseWIN;
+    bool genWIN();
+    void clearExtraParams();
     //_________________________________________________________________________________________
 };
 #endif // WINDOWPROTOCOL_H

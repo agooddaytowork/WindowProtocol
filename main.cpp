@@ -36,6 +36,17 @@ int main(int argc, char *argv[])
         qDebug() << test.getDATA() << " -- " << test.getDATAMean();
     }
 
+    anMsg("====================================================================\n", anForegroundYellow);
+    qDebug() << "Ref: " << aTest.HVOnOffCh1().Write().setON().genMSG().toHex();
+    qDebug() << "See: " << aTest.HVOnOff().setChNo(1).Write().setON().genMSG().toHex();
+    qDebug() << "-----------------------------";
+    qDebug() << "Ref: " << aTest.TempHV1().Read().clearDATA().genMSG().toHex();
+    qDebug() << "See: " << aTest.setChNo(1).TempHV().Read().clearDATA().genMSG().toHex();
+    qDebug() << "-----------------------------";
+    qDebug() << "Ref: " << aTest.IMeasuredCh3().Read().clearDATA().genMSG().toHex();
+    qDebug() << "See: " << aTest.IMeasured().setChNo(3).Read().clearDATA().genMSG().toHex();
+    qDebug() << "-----------------------------";
+
 
     return a.exec();
 }

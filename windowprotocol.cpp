@@ -131,7 +131,10 @@ WindowProtocol &WindowProtocol::setADDR(const quint8 addr)
 WindowProtocol &WindowProtocol::setWIN(const quint16 win)
 {
     if (win)
+    {
         WIN=win;
+        clearExtraParams();
+    }
     else
     {
         WIN=0;
@@ -263,8 +266,86 @@ WindowProtocol &WindowProtocol::setCRC(const quint16 crc)
     return *this;
 }
 
+WindowProtocol &WindowProtocol::setChNo(const quint8 ChannelNo)
+{
+    ChNo = ChannelNo;
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::HVOnOff()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::DeviceNumber()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::PowerMax()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::VTarget()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::IProtect()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::SetPoint()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::TempHV()
+{
+    baseWIN = QString(__func__);
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::VMeasured()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::IMeasured()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
+WindowProtocol &WindowProtocol::PMeasured()
+{
+    baseWIN = QString(__func__)+QStringLiteral("Ch");
+    genWIN();
+    return *this;
+}
+
 const QByteArray &WindowProtocol::genMSG()
 {
+    clearExtraParams();
     MSG.clear();
     MSG<<ADDR;
     if (WIN)
@@ -312,6 +393,22 @@ WindowProtocol &WindowProtocol::setCMDFlag(const bool isACMD)
 {
     isCMD=isACMD;
     return *this;
+}
+
+bool WindowProtocol::genWIN()
+{
+    if (baseWIN.size() && (ChNo>0) && (ChNo<5))
+    {
+        setWIN(WINMean2WINCode.value(baseWIN+QString::number(ChNo)));
+        return true;
+    }
+    return false;
+}
+
+void WindowProtocol::clearExtraParams()
+{
+    ChNo = 0;
+    baseWIN.clear();
 }
 
 quint8 WindowProtocol::getADDR() const
