@@ -4,7 +4,7 @@
 #define WindowProtocolDbgEn 1
 
 #include <QByteArray>
-#include "anlogger.h"
+#include "anlogger.h/anlogger.h"
 #include "commonthings.h"
 
 class WindowProtocol
