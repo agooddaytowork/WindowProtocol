@@ -10,7 +10,8 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    windowprotocol.cpp
+    windowprotocol.cpp \
+    anLogger/anlogger.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -25,5 +26,5 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
     windowprotocol.h \
-    anlogger.h \
-    commonthings.h
+    anLogger/anlogger.h \
+    edctuCommons/commonthings.h
