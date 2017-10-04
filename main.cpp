@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include "windowprotocol.h"
+#include "src/windowprotocol.h"
 #include <QDebug>
 #include <QList>
 
