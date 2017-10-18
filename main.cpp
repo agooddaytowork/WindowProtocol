@@ -1,51 +1,64 @@
 #include <QCoreApplication>
 #include "src/windowprotocol.h"
+#include "shared/commonthings.h"
 #include <QDebug>
-#include <QList>
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    qDebug() << "==============================================";
-    WindowProtocol aTest(0);
-    qDebug() << aTest.HVOnOffCh1().Write().setON().genMSG().toHex();
-    qDebug() << aTest.getMSGMean();
-    qDebug() << "==============================================";
 
-    QList<QByteArray> testArray;
-    testArray.append("02 80 30 31 31 31 31 03 42 33");
-    testArray.append("02 80 06 03 38 33");
-    testArray.append("02 80 30 31 31 31 30 03 42 32");
-    testArray.append("02 80 06 03 38 35");
-    testArray.append("02 80 38 31 32 30 03 38 38");
-    testArray.append("02 80 38 31 32 30 20 20 20 31 2E 35 45 2D 30 38 03 45 32");
-    testArray.append("02 80 38 31 30 30 03 38 41");
-    testArray.append("02 80 38 31 30 30 30 30 33 30 30 30 03 38 39");
-    testArray.append("02 80 38 31 31 30 03 38 42");
-    testArray.append("02 80 38 31 31 30 20 20 20 32 2E 39 45 2D 30 35 03 45 33");
+     WindowProtocol aTest;
+     QString TestContent;
+     QByteArray SampleCommand;
+     QByteArray ReGenCommand;
+     int tmpInt;
 
-    foreach(QByteArray aQBArr, testArray)
+    //The WindowProtocol Test Commands Below Are Taken From The DataSheet Of UHV4
+    qDebug() << "===WINDOW PROTOCOL TESTER=========================================================";
+
+    QList<QPair<QString,QByteArray>> testArray;
+    testArray.append(QPair<QString,QByteArray>(QString("TURN ON CHANNEL 1, PC->CONTROLLER, PDF-Page 78/114|02803031313131034233"),
+                                               aTest.setWPNo(0).HVOnOffCh1().Write().setON().genMSG()));
+    testArray.append(QPair<QString,QByteArray>(QString("TURN ON CHANNEL 1, CONTROLLER->PC, PDF-Page 78/114|028006033833"),
+                                               QByteArray()));
+    testArray.append(QPair<QString,QByteArray>(QString("TURN OFF CHANNEL 1, PC->CONTROLLER, PDF-Page 78/114|02803031313130034232"),
+                                               aTest.setWPNo(0).HVOnOffCh1().Write().setOFF().genMSG()));
+    testArray.append(QPair<QString,QByteArray>(QString("TURN OFF CHANNEL 1, CONTROLLER->PC, PDF-Page 78/114|028006033835"),
+                                               QByteArray()));
+    testArray.append(QPair<QString,QByteArray>(QString("READ PRESSURE (WIN 812) CHANNEL 1, PC->CONTROLLER, PDF-Page 78/114|028038313230033838"),
+                                               aTest.setWPNo(0).Read().PMeasured().setChNo(1).clearDATA().genMSG()));
+                                             //aTest.setWPNo(0).Read().PMeasuredCh1().clearDATA().genMSG() IS THE SAME
+    testArray.append(QPair<QString,QByteArray>(QString("READ PRESSURE (WIN 812) CHANNEL 1, CONTROLLER->PC, PDF-Page 78/114|028038313230202020312E35452D3038034532"),
+                                               QByteArray()));
+    testArray.append(QPair<QString,QByteArray>(QString("READ VOLTAGE (WIN 810) CHANNEL 1, PC->CONTROLLER, PDF-Page 79/114|028038313030033841"),
+                                               aTest.setWPNo(0).Read().VMeasuredCh1().clearDATA().genMSG()));
+                                             //aTest.setWPNo(0).Read().VMeasured().setChNo(1).clearDATA().genMSG() IS THE SAME
+    testArray.append(QPair<QString,QByteArray>(QString("READ VOLTAGE (WIN 810) CHANNEL 1, CONTROLLER->PC, PDF-Page 79/114|028038313030303033303030033839"),
+                                               QByteArray()));
+    testArray.append(QPair<QString,QByteArray>(QString("READ CURRENT (WIN 811) CHANNEL 1, PC->CONTROLLER, PDF-Page 79/114|028038313130033842"),
+                                               aTest.setWPNo(0).Read().IMeasured().setChNo(1).clearDATA().genMSG()));
+                                             //aTest.setWPNo(0).Read().IMeasuredCh1().clearDATA().genMSG() IS THE SAME
+    testArray.append(QPair<QString,QByteArray>(QString("READ CURRENT (WIN 811) CHANNEL 1, CONTROLLER->PC, PDF-Page 79/114|028038313130202020322E39452D3035034533"),
+                                               QByteArray()));
+
+    for (quint8 i=0; i<testArray.size(); ++i)
     {
-        qDebug() << "=================";
-        WindowProtocol test = WindowProtocol::fromQByteArray(QByteArray::fromHex(aQBArr));
-        qDebug() << "ORIGIN: " << aQBArr;
-        qDebug() << test.getMSG().toHex() << " -- " << test.getMSGMean();
-        qDebug() << test.getADDR() << " -- " << test.getAddress();
-        qDebug() << test.getWINCode() << " -- " << test.getWINMean();
-        qDebug() << test.getCOM() << " -- " << test.getCOMMean();
-        qDebug() << test.getDATA() << " -- " << test.getDATAMean();
+        tmpInt = testArray.at(i).first.indexOf('|');
+        TestContent = testArray.at(i).first.left(tmpInt);
+        SampleCommand = testArray.at(i).first.mid(tmpInt+1).toLocal8Bit();
+        ReGenCommand = testArray.at(i).second;
+        qDebug().noquote() << TestContent;
+        qDebug().noquote() << "   Sample Command:" << SampleCommand;
+        qDebug().noquote() << "   Try Regenerate:" << (ReGenCommand.isEmpty()?"NOT APPLICABLE":ReGenCommand.toHex());
+        aTest = WindowProtocol::fromQByteArray(QByteArray::fromHex(SampleCommand));
+        qDebug().noquote() << "   Try Translate :" << aTest.getMSGMean();
+        qDebug().noquote() << "            ADDR :" << QByteArray().append(aTest.getADDR()).toHex() << " -- " << aTest.getAddress();
+        qDebug().noquote() << "             WIN :" << aTest.getWINCode()<< " -- " << aTest.getWINMean();
+        qDebug().noquote() << "             COM :" << QByteArray().append(aTest.getCOM()).toHex() << " -- " << aTest.getCOMMean();
+        qDebug().noquote() << "            DATA :" << aTest.getDATA().toHex() << " -- " << aTest.getDATAMean();
     }
 
-    anMsg("====================================================================\n", anForegroundYellow);
-    qDebug() << "Ref: " << aTest.HVOnOffCh1().Write().setON().genMSG().toHex();
-    qDebug() << "See: " << aTest.HVOnOff().setChNo(1).Write().setON().genMSG().toHex();
-    qDebug() << "-----------------------------";
-    qDebug() << "Ref: " << aTest.TempHV1().Read().clearDATA().genMSG().toHex();
-    qDebug() << "See: " << aTest.setChNo(1).TempHV().Read().clearDATA().genMSG().toHex();
-    qDebug() << "-----------------------------";
-    qDebug() << "Ref: " << aTest.IMeasuredCh3().Read().clearDATA().genMSG().toHex();
-    qDebug() << "See: " << aTest.IMeasured().setChNo(3).Read().clearDATA().genMSG().toHex();
-    qDebug() << "-----------------------------";
+    qDebug() << "===END OF TEST====================================================================";
 
 
     return a.exec();
